@@ -10,6 +10,13 @@ export default class MapView {
 
     render() {
         this.el = <div className="map-view"/>;
+
+        setTimeout(() => this.renderMap(), 0);
+
+        return this.el;
+    }
+
+    renderMap() {
         /**
          * @type {Map}
          */
@@ -43,7 +50,9 @@ export default class MapView {
         });
 
         this.addEventListeners();
+    }
 
+    addEventListeners() {
         this.map.on("load", () => {
             // Add points to map as a GeoJSON source.
             this.map.addSource("points", {
@@ -65,10 +74,6 @@ export default class MapView {
             });
         });
 
-        return this.el;
-    }
-
-    addEventListeners() {
         // Show a popup when clicking on a point.
         this.map.on("click", "points", event => {
             console.log(event);
