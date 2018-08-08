@@ -1,0 +1,25 @@
+.header {
+  margin: 0 auto 10px auto;
+  padding-top: 10px;
+  padding-bottom: 10px; }
+
+.map-view {
+  width: 400px;
+  height: 400px; }
+
+body {
+  background-color: #eee;
+  margin: 0 0 0 0; }
+  body .main {
+    background-color: white;
+    font: 14px "Arial", sans-serif;
+    width: 90%;
+    margin: 0 auto 0 auto;
+    padding: 20px; }
+    body .main a, body .main a:visited {
+      color: inherit; }
+    body .main .footer {
+      margin-top: 20px; }
+
+
+/*# sourceMappingURL=index.558811102451f05747f8.css.map*/
