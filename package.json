@@ -37,6 +37,7 @@
     "webpack-md5-hash": "0.0.6"
   },
   "dependencies": {
-    "hyperscript": "^2.0.2"
+    "hyperscript": "^2.0.2",
+    "mapbox-gl": "^0.47.0"
   }
 }
