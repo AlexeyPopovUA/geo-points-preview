@@ -1,9 +1,9 @@
 import "./../../styles/components/Header.scss";
 
-export default class Header {
+export default class Map {
     static render() {
         return (
-            <div className="header">Geo points viewer</div>
+            <div className="map-view"/>
         );
     }
 }
