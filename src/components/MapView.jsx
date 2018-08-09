@@ -25,7 +25,7 @@ export default class MapView {
         this.map = new mapboxgl.Map({
             container: this.el.firstChild,
             style: {
-                "glyphs": "http://glfonts.lukasmartinelli.ch/fonts/{fontstack}/{range}.pbf",
+                "glyphs": "https://glfonts.lukasmartinelli.ch/fonts/{fontstack}/{range}.pbf",
                 //"glyphs": "http://fonts.openmaptiles.org/{fontstack}/{range}.pbf",
                 //"glyphs": "mapbox://fonts/mapbox/{fontstack}/{range}.pbf",
                 version: 8,
