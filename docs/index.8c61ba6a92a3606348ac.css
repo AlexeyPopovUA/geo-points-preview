@@ -1,0 +1,29 @@
+.header {
+  text-align: center;
+  padding: 10px 10px 10px 10px; }
+
+.footer {
+  padding: 10px 10px 10px 10px; }
+
+.map-view {
+  height: 500px; }
+  .map-view .map-view-wrapper {
+    height: 100%; }
+
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden; }
+
+body {
+  background-color: #eee; }
+  body .main {
+    background-color: white;
+    font: 14px "Arial", sans-serif;
+    margin: 10px 30px 10px 30px; }
+    body .main a, body .main a:visited {
+      color: inherit; }
+
+
+/*# sourceMappingURL=index.8c61ba6a92a3606348ac.css.map*/
