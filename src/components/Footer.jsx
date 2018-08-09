@@ -1,4 +1,4 @@
-import "./../../styles/components/Header.scss";
+import "./../../styles/components/Footer.scss";
 
 export default class Footer {
     static render() {

@@ -1,22 +1,22 @@
 @import "vars";
 
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
 body {
   background-color: $body-background-color;
-  margin: 0 0 0 0;
 
   .main {
     background-color: $main-background-color;
     font: $default-font;
-    width: 90%;
-    margin: 0 auto 0 auto;
-    padding: 20px;
+    margin: 10px 30px 10px 30px;
 
     a, a:visited {
       color: inherit;
-    }
-
-    .footer {
-      margin-top: 20px;
     }
   }
 }

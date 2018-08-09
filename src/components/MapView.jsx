@@ -9,7 +9,9 @@ export default class MapView {
     }
 
     render() {
-        this.el = <div className="map-view"/>;
+        this.el = <div className="map-view">
+            <div className="map-view-wrapper"/>
+        </div>;
 
         setTimeout(() => this.renderMap(), 0);
 
@@ -21,7 +23,7 @@ export default class MapView {
          * @type {Map}
          */
         this.map = new mapboxgl.Map({
-            container: this.el,
+            container: this.el.firstChild,
             style: {
                 version: 8,
                 zoom: 8, // default zoom.
