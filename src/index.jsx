@@ -1,5 +1,6 @@
 window.JSX = require('hyperscript');
 import Header from "./components/Header.jsx";
+import Form from "./components/Form.jsx";
 import Footer from "./components/Footer.jsx";
 import MapView from "./components/MapView.jsx";
 import "./../styles/index.scss";
@@ -11,11 +12,12 @@ window.addEventListener("load", () => {
         .then(result => result.json())
         .then(json => {
             const data = JSON.parse(json.files["data-points.json"].content);
-            console.warn("fetch", data);
+            //console.warn("fetch", data);
 
             document.body.appendChild(
                 <div className="main">
                     {Header.render()}
+                    {(new Form().render())}
                     {(new MapView({data})).render()}
                     {Footer.render()}
                 </div>);
