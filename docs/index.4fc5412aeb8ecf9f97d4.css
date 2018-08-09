@@ -2,6 +2,27 @@
   text-align: center;
   padding: 10px 10px 10px 10px; }
 
+.form {
+  position: absolute;
+  z-index: 2;
+  top: 45px;
+  left: 30px;
+  background-color: white;
+  width: 200px;
+  opacity: 0.8; }
+  .form fieldset {
+    padding-left: 2px;
+    padding-right: 2px;
+    border-style: solid;
+    border-width: 1px;
+    border-color: grey; }
+    .form fieldset input {
+      width: 110px;
+      float: right; }
+    .form fieldset label {
+      float: left;
+      font-size: 12px; }
+
 .footer {
   padding: 10px 10px 10px 10px; }
 
@@ -26,4 +47,4 @@ body {
       color: inherit; }
 
 
-/*# sourceMappingURL=index.8c61ba6a92a3606348ac.css.map*/
+/*# sourceMappingURL=index.4fc5412aeb8ecf9f97d4.css.map*/
