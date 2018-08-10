@@ -81,13 +81,15 @@ export default class MapView {
      * @private
      */
     configureMap(){
+        const clusterIconSize = parseInt(this.config.mapConfig["icon-size"]);
+
         // Add points to map as a GeoJSON source.
         this.map.addSource(MapView.SOURCE_NAME, {
             type: "geojson",
             data: this.config.data,
             cluster: true,
             clusterMaxZoom: 14,
-            clusterRadius: 35//todo Calculate
+            clusterRadius: this.getClusterRadiusByClusterIconSize(clusterIconSize)
         });
 
         this.map.addLayer({
@@ -97,7 +99,7 @@ export default class MapView {
             filter: ["has", "point_count"],
             paint: {
                 "circle-color": "#51bbd6",
-                "circle-radius": this.config.mapConfig["icon-size"],
+                "circle-radius": clusterIconSize,
                 "circle-stroke-width": 2
             }
         });
@@ -111,7 +113,7 @@ export default class MapView {
             layout: {
                 "text-field": "{point_count_abbreviated}",
                 "text-font": ["Open Sans Bold"],
-                "text-size": 12//todo Calculate from cluster size
+                "text-size": this.getTextSizeByClusterIconSize(clusterIconSize)
             }
         });
 
@@ -122,7 +124,7 @@ export default class MapView {
             filter: ["!has", "point_count"],
             paint: {
                 "circle-color": "#11b4da",
-                "circle-radius": 7,//todo Calculate from cluster size
+                "circle-radius": this.getSingleSizeByClusterIconSize(clusterIconSize),
                 "circle-stroke-width": 1,
                 "circle-stroke-color": "#fff"
             }
@@ -173,8 +175,29 @@ export default class MapView {
     }
 
     reconfigureMap(data) {
+        //console.warn(data, this.map);
+
         //console.warn("reconfigureMap", data);
         this.map.setPaintProperty('clusters', 'circle-radius', parseInt(data["icon-size"]));
+        this.map.setLayoutProperty('cluster-count', 'text-size',
+            this.getTextSizeByClusterIconSize(parseInt(data["icon-size"])));//todo Fix
+        this.map.setPaintProperty('unclustered-point', 'circle-radius',
+            this.getSingleSizeByClusterIconSize(parseInt(data["icon-size"])));//todo Fix
+
+        //reconfigure clasterRadius somehow in the data source
+    }
+
+    getTextSizeByClusterIconSize(size) {
+        return size / 2;
+    }
+
+    getSingleSizeByClusterIconSize(size) {
+        return size / 2;
+    }
+
+    //todo Calculate properly w/o overlapping
+    getClusterRadiusByClusterIconSize(size) {
+        return size * 2.5;
     }
 }
 
