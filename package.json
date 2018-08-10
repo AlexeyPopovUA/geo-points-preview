@@ -38,6 +38,7 @@
   },
   "dependencies": {
     "hyperscript": "^2.0.2",
-    "mapbox-gl": "^0.47.0"
+    "mapbox-gl": "^0.47.0",
+    "lodash": "latest"
   }
 }

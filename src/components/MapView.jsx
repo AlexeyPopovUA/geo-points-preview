@@ -9,15 +9,20 @@ export default class MapView {
     }
 
     render() {
-        this.el = <div className="map-view">
-            <div className="map-view-wrapper"/>
-        </div>;
+        this.el = (
+            <div className="map-view">
+                <div className="map-view-wrapper"/>
+            </div>
+        );
 
         setTimeout(() => this.renderMap(), 0);
 
         return this.el;
     }
 
+    /**
+     * @private
+     */
     renderMap() {
         /**
          * @type {Map}
@@ -57,6 +62,9 @@ export default class MapView {
         this.addEventListeners();
     }
 
+    /**
+     * @private
+     */
     addEventListeners() {
         this.map.on("load", this.configureMap.bind(this));
 
@@ -69,6 +77,9 @@ export default class MapView {
         this.map.on("mouseleave", "unclustered-point", this.resetMouse.bind(this));
     }
 
+    /**
+     * @private
+     */
     configureMap(){
         // Add points to map as a GeoJSON source.
         this.map.addSource(MapView.SOURCE_NAME, {
@@ -76,7 +87,7 @@ export default class MapView {
             data: this.config.data,
             cluster: true,
             clusterMaxZoom: 14,
-            clusterRadius: 35
+            clusterRadius: 35//todo Calculate
         });
 
         this.map.addLayer({
@@ -86,7 +97,7 @@ export default class MapView {
             filter: ["has", "point_count"],
             paint: {
                 "circle-color": "#51bbd6",
-                "circle-radius": 15,
+                "circle-radius": this.config.mapConfig["icon-size"],
                 "circle-stroke-width": 2
             }
         });
@@ -100,7 +111,7 @@ export default class MapView {
             layout: {
                 "text-field": "{point_count_abbreviated}",
                 "text-font": ["Open Sans Bold"],
-                "text-size": 12
+                "text-size": 12//todo Calculate from cluster size
             }
         });
 
@@ -111,21 +122,31 @@ export default class MapView {
             filter: ["!has", "point_count"],
             paint: {
                 "circle-color": "#11b4da",
-                "circle-radius": 7,
+                "circle-radius": 7,//todo Calculate from cluster size
                 "circle-stroke-width": 1,
                 "circle-stroke-color": "#fff"
             }
         });
     }
 
+    /**
+     * @private
+     */
     makeMousePointer() {
         this.map.getCanvas().style.cursor = "pointer";
     }
 
+    /**
+     * @private
+     */
     resetMouse() {
         this.map.getCanvas().style.cursor = "";
     }
 
+    /**
+     * @private
+     * @param e
+     */
     onClusterClick(e){
         const features = this.map.queryRenderedFeatures(e.point, {layers: ['clusters']});
         const clusterId = features[0].properties.cluster_id;
@@ -140,11 +161,20 @@ export default class MapView {
         });
     }
 
+    /**
+     * @private
+     * @param event
+     */
     onSingleMarkerClick(event){
         new mapboxgl.Popup()
             .setLngLat(event.lngLat)
             .setHTML(`Clicked on a feature with id = ${event.features[0].properties.id}`)
             .addTo(this.map);
+    }
+
+    reconfigureMap(data) {
+        //console.warn("reconfigureMap", data);
+        this.map.setPaintProperty('clusters', 'circle-radius', parseInt(data["icon-size"]));
     }
 }
 

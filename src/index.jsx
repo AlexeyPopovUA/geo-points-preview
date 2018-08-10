@@ -12,15 +12,27 @@ window.addEventListener("load", () => {
         .then(result => result.json())
         .then(json => {
             const data = JSON.parse(json.files["data-points.json"].content);
-            //console.warn("fetch", data);
+
+            const mapConfig = {
+                "icon-size": 15,
+                "map-box-br": "51.6836 0.05081",
+                "map-box-tl": "51.4904 -0.27603",
+                "map-height": 600,
+                "map-width": 800
+            };
+            const form = new Form(mapConfig);
+            const map = new MapView({data, mapConfig});
 
             document.body.appendChild(
                 <div className="main">
                     {Header.render()}
-                    {(new Form().render())}
-                    {(new MapView({data})).render()}
+                    {form.render()}
+                    {map.render()}
                     {Footer.render()}
-                </div>);
+                </div>
+            );
+
+            form.on("form-submit", data => map.reconfigureMap(data));
         })
         .catch(error => console.error(error));
 });
