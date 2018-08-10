@@ -22,6 +22,8 @@
     .form fieldset label {
       float: left;
       font-size: 12px; }
+  .form .submit {
+    margin: 5px 0 5px 2px; }
 
 .footer {
   padding: 10px 10px 10px 10px; }
@@ -47,4 +49,4 @@ body {
       color: inherit; }
 
 
-/*# sourceMappingURL=index.4fc5412aeb8ecf9f97d4.css.map*/
+/*# sourceMappingURL=index.9f0a04f5caa689cd25ce.css.map*/
