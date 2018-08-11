@@ -28,11 +28,11 @@ export default class Form extends EventEmitter {
                 </fieldset>
                 <fieldset>
                     <legend>Map bounding box</legend>
-                    <label htmlFor="map-box-tl">Top left</label>
-                    <input type="text" name="map-box-tl" id="map-box-tl" value={this.config["map-box-tl"]}/>
+                    <label htmlFor="map-box-bl">Bottom left</label>
+                    <input type="text" name="map-box-bl" id="map-box-bl" value={this.config["map-box-bl"].join(" ")}/>
                     <br/>
-                    <label htmlFor="map-box-br">Bottom right</label>
-                    <input type="text" name="map-box-br" id="map-box-br" value={this.config["map-box-br"]}/>
+                    <label htmlFor="map-box-tr">Top right</label>
+                    <input type="text" name="map-box-tr" id="map-box-tr" value={this.config["map-box-tr"].join(" ")}/>
                 </fieldset>
                 <button className="submit">Ok</button>
             </form>

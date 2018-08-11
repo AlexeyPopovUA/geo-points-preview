@@ -130,12 +130,15 @@ export default class MapView {
     reconfigureMap(data) {
         this.config.mapConfig = data;
 
-        this.map.removeLayer(MapView.CLUSTER_LAYER);
-        this.map.removeLayer(MapView.CLUSTER_NUMBER);
-        this.map.removeLayer(MapView.SINGLE_MARKER);
-        this.map.removeSource(MapView.SOURCE_NAME);
+        //prevent errors of early calls
+        if (this.map.areTilesLoaded()) {
+            this.map.removeLayer(MapView.CLUSTER_LAYER);
+            this.map.removeLayer(MapView.CLUSTER_NUMBER);
+            this.map.removeLayer(MapView.SINGLE_MARKER);
+            this.map.removeSource(MapView.SOURCE_NAME);
 
-        this.configureMap();
+            this.configureMap();
+        }
     }
 
     /**
