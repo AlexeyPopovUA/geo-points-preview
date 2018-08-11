@@ -28,16 +28,10 @@
 .footer {
   padding: 10px 10px 10px 10px; }
 
-.map-view {
-  height: 500px; }
-  .map-view .map-view-wrapper {
-    height: 100%; }
 
 html, body {
-  height: 100%;
   margin: 0;
-  padding: 0;
-  overflow: hidden; }
+  padding: 0; }
 
 body {
   background-color: #eee; }
