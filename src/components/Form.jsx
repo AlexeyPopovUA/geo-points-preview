@@ -16,10 +16,10 @@ export default class Form extends EventEmitter {
                 <fieldset>
                     <legend>Map size</legend>
                     <label htmlFor="map-width">Width</label>
-                    <input type="number" name="map-width" id="map-width" value={this.config["map-width"]}/>
+                    <input disabled="disabled" type="number" name="map-width" id="map-width" value={this.config["map-width"]}/>
                     <br/>
                     <label htmlFor="map-height">Height</label>
-                    <input type="number" name="map-height" id="map-height" value={this.config["map-height"]}/>
+                    <input disabled="disabled" type="number" name="map-height" id="map-height" value={this.config["map-height"]}/>
                 </fieldset>
                 <fieldset>
                     <legend>Icon size</legend>

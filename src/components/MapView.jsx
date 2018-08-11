@@ -78,7 +78,7 @@ export default class MapView {
      * @private
      */
     configureMap(){
-        const clusterIconSize = parseInt(this.config.mapConfig["icon-size"]);
+        const clusterIconSize = this.config.mapConfig["icon-size"];
 
         this.map.addSource(MapView.SOURCE_NAME, {
             type: "geojson",
