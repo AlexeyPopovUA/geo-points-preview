@@ -1,8 +1,8 @@
 export const Config = {
     mapConfig: {
         "icon-size": 15,
-        "map-box-tr": [51.6836, 0.05081],
-        "map-box-bl": [51.4904, -0.27603],
+        "map-box-tr": [51.599973, 0.223386],
+        "map-box-bl": [51.391208, -0.434015],
         "map-height": 600,
         "map-width": 800
     },

@@ -31,8 +31,6 @@ export default class MapView {
                 //"glyphs": "http://fonts.openmaptiles.org/{fontstack}/{range}.pbf",
                 //"glyphs": "mapbox://fonts/mapbox/{fontstack}/{range}.pbf",
                 version: 8,
-                zoom: 8,
-                center: [0, 51.5], //[longitude, latitude]
                 sources: {
                     // Using an open-source map tile layer.
                     "simple-tiles": {
@@ -84,7 +82,6 @@ export default class MapView {
             type: "geojson",
             data: this.config.data,
             cluster: true,
-            clusterMaxZoom: 14,
             clusterRadius: this.getClusterRadiusByClusterIconSize(clusterIconSize)
         });
 
@@ -125,6 +122,12 @@ export default class MapView {
                 "circle-stroke-color": "#fff"
             }
         });
+
+        //todo Why reverse order?
+        this.map.fitBounds([
+            this.config.mapConfig["map-box-bl"].reverse(),
+            this.config.mapConfig["map-box-tr"].reverse()
+        ]);
     }
 
     reconfigureMap(data) {

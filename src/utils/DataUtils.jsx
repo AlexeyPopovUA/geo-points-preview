@@ -18,8 +18,8 @@ export const DataUtils = {
      * }}
      */
     parseFormData(formData) {
-        const mapBoxTR = formData["map-box-tr"].split(" ");
-        const mapBoxBL = formData["map-box-bl"].split(" ");
+        const mapBoxTR = DataUtils.parseCoordinate(formData["map-box-tr"]);
+        const mapBoxBL = DataUtils.parseCoordinate(formData["map-box-bl"]);
 
         return {
             "icon-size": parseInt(formData["icon-size"]),
@@ -28,5 +28,9 @@ export const DataUtils = {
             "map-height": parseInt(formData["map-height"]),
             "map-width": parseInt(formData["map-width"])
         };
+    },
+
+    parseCoordinate(string) {
+        return string.split(" ").map(value => parseFloat(value));
     }
 };
