@@ -9,10 +9,9 @@ import {Config} from "./configuration/defaults.jsx";
 import "./../styles/index.scss";
 
 window.addEventListener("load", () => {
-    Service.getData(Config.fetchUrl)
-        .then(json => {
-            const data = JSON.parse(json.files["data-points.json"].content);
-
+    Service
+        .getData(Config.fetchUrl)
+        .then(data => {
             const mapConfig = Config.mapConfig;
             const form = new Form(mapConfig);
             const map = new MapView({data, mapConfig});

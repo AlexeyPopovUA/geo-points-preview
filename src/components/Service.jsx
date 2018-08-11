@@ -5,6 +5,8 @@ export const Service = {
      * @returns {Promise}
      */
     getData(url) {
-        return fetch(url).then(result => result.json());
+        return fetch(url)
+            .then(result => result.json())
+            .then(json => JSON.parse(json.files["data-points.json"].content));
     }
 };
