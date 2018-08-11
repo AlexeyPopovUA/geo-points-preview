@@ -24,9 +24,6 @@ export default class MapView {
      * @private
      */
     renderMap() {
-        /**
-         * @type {Map}
-         */
         this.map = new mapboxgl.Map({
             container: this.el.firstChild,
             style: {
@@ -34,8 +31,8 @@ export default class MapView {
                 //"glyphs": "http://fonts.openmaptiles.org/{fontstack}/{range}.pbf",
                 //"glyphs": "mapbox://fonts/mapbox/{fontstack}/{range}.pbf",
                 version: 8,
-                zoom: 8, // default zoom.
-                center: [0, 51.5], // default center coordinate in [longitude, latitude] format.
+                zoom: 8,
+                center: [0, 51.5], //[longitude, latitude]
                 sources: {
                     // Using an open-source map tile layer.
                     "simple-tiles": {
@@ -68,13 +65,13 @@ export default class MapView {
     addEventListeners() {
         this.map.on("load", this.configureMap.bind(this));
 
-        this.map.on("click", "unclustered-point", this.onSingleMarkerClick.bind(this));
-        this.map.on('click', 'clusters', this.onClusterClick.bind(this));
+        this.map.on("click", MapView.SINGLE_MARKER, this.onSingleMarkerClick.bind(this));
+        this.map.on('click', MapView.CLUSTER_LAYER, this.onClusterClick.bind(this));
 
-        this.map.on("mouseenter", "clusters", this.makeMousePointer.bind(this));
-        this.map.on("mouseenter", "unclustered-point", this.makeMousePointer.bind(this));
-        this.map.on("mouseleave", "clusters", this.resetMouse.bind(this));
-        this.map.on("mouseleave", "unclustered-point", this.resetMouse.bind(this));
+        this.map.on("mouseenter", MapView.CLUSTER_LAYER, this.makeMousePointer.bind(this));
+        this.map.on("mouseenter", MapView.SINGLE_MARKER, this.makeMousePointer.bind(this));
+        this.map.on("mouseleave", MapView.CLUSTER_LAYER, this.resetMouse.bind(this));
+        this.map.on("mouseleave", MapView.SINGLE_MARKER, this.resetMouse.bind(this));
     }
 
     /**
@@ -83,7 +80,6 @@ export default class MapView {
     configureMap(){
         const clusterIconSize = parseInt(this.config.mapConfig["icon-size"]);
 
-        // Add points to map as a GeoJSON source.
         this.map.addSource(MapView.SOURCE_NAME, {
             type: "geojson",
             data: this.config.data,
@@ -93,7 +89,7 @@ export default class MapView {
         });
 
         this.map.addLayer({
-            id: "clusters",
+            id: MapView.CLUSTER_LAYER,
             type: "circle",
             source: MapView.SOURCE_NAME,
             filter: ["has", "point_count"],
@@ -105,7 +101,7 @@ export default class MapView {
         });
 
         this.map.addLayer({
-            id: "cluster-count",
+            id: MapView.CLUSTER_NUMBER,
             type: "symbol",
             source: MapView.SOURCE_NAME,
             filter: ["has", "point_count"],
@@ -118,7 +114,7 @@ export default class MapView {
         });
 
         this.map.addLayer({
-            id: "unclustered-point",
+            id: MapView.SINGLE_MARKER,
             type: "circle",
             source: MapView.SOURCE_NAME,
             filter: ["!has", "point_count"],
@@ -129,6 +125,45 @@ export default class MapView {
                 "circle-stroke-color": "#fff"
             }
         });
+    }
+
+    reconfigureMap(data) {
+        this.config.mapConfig = data;
+
+        this.map.removeLayer(MapView.CLUSTER_LAYER);
+        this.map.removeLayer(MapView.CLUSTER_NUMBER);
+        this.map.removeLayer(MapView.SINGLE_MARKER);
+        this.map.removeSource(MapView.SOURCE_NAME);
+
+        this.configureMap();
+    }
+
+    /**
+     * @private
+     * @param {number} size
+     * @returns {number}
+     */
+    getTextSizeByClusterIconSize(size) {
+        return size * 0.75;
+    }
+
+    /**
+     * @private
+     * @param {number} size
+     * @returns {number}
+     */
+    getSingleSizeByClusterIconSize(size) {
+        return size * 0.5;
+    }
+
+    /**
+     * Calculates properly w/o overlapping
+     * @private
+     * @param {number} size
+     * @returns {number}
+     */
+    getClusterRadiusByClusterIconSize(size) {
+        return size * 3;
     }
 
     /**
@@ -147,19 +182,21 @@ export default class MapView {
 
     /**
      * @private
-     * @param e
+     * @param event
      */
-    onClusterClick(e){
-        const features = this.map.queryRenderedFeatures(e.point, {layers: ['clusters']});
+    onClusterClick(event){
+        const features = this.map.queryRenderedFeatures(event.point, {layers: ['clusters']});
         const clusterId = features[0].properties.cluster_id;
-        this.map.getSource(MapView.SOURCE_NAME).getClusterExpansionZoom(clusterId, (err, zoom) => {
-            if (err)
-                return;
 
-            this.map.easeTo({
-                center: features[0].geometry.coordinates,
-                zoom: zoom
-            });
+        this.map.getSource(MapView.SOURCE_NAME).getClusterExpansionZoom(clusterId, (error, zoom) => {
+            if (!error) {
+                this.map.easeTo({
+                    center: features[0].geometry.coordinates,
+                    zoom
+                });
+            } else {
+                console.error(error);
+            }
         });
     }
 
@@ -173,32 +210,9 @@ export default class MapView {
             .setHTML(`Clicked on a feature with id = ${event.features[0].properties.id}`)
             .addTo(this.map);
     }
-
-    reconfigureMap(data) {
-        //console.warn(data, this.map);
-
-        //console.warn("reconfigureMap", data);
-        this.map.setPaintProperty('clusters', 'circle-radius', parseInt(data["icon-size"]));
-        this.map.setLayoutProperty('cluster-count', 'text-size',
-            this.getTextSizeByClusterIconSize(parseInt(data["icon-size"])));//todo Fix
-        this.map.setPaintProperty('unclustered-point', 'circle-radius',
-            this.getSingleSizeByClusterIconSize(parseInt(data["icon-size"])));//todo Fix
-
-        //reconfigure clasterRadius somehow in the data source
-    }
-
-    getTextSizeByClusterIconSize(size) {
-        return size / 2;
-    }
-
-    getSingleSizeByClusterIconSize(size) {
-        return size / 2;
-    }
-
-    //todo Calculate properly w/o overlapping
-    getClusterRadiusByClusterIconSize(size) {
-        return size * 2.5;
-    }
 }
 
 MapView.SOURCE_NAME = "points";
+MapView.CLUSTER_LAYER = "clusters";
+MapView.CLUSTER_NUMBER = "cluster-count";
+MapView.SINGLE_MARKER = "unclustered-point";
