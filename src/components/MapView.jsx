@@ -78,6 +78,12 @@ export default class MapView {
     configureMap(){
         const clusterIconSize = this.config.mapConfig["icon-size"];
 
+        //resize
+        const mapWrapper = this.el.querySelector(".map-view-wrapper");
+        mapWrapper.style.width = `${this.config.mapConfig["map-width"]}px`;
+        mapWrapper.style.height = `${this.config.mapConfig["map-height"]}px`;
+        this.map.resize();
+
         this.map.addSource(MapView.SOURCE_NAME, {
             type: "geojson",
             data: this.config.data,
